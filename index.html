@@ -115,12 +115,33 @@
 }
 
 .envelope.open .envelope-flap {
-  transform: rotateX(180deg);
+  transform: rotateX(180deg) translateY(-40px);
+  opacity: 0;
+  transition: all 1.2s ease;
+}
+
+.envelope.open .envelope-front {
+  animation: fallAway 1.5s forwards;
 }
 
 .envelope.open .letter {
   opacity: 1;
-  transform: translateX(-50%) translateY(-120px);
+  transform: translateX(-50%) translateY(-180px) scale(1.02);
+}
+
+@keyframes fallAway {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(80px) rotate(6deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(220px) rotate(12deg);
+    opacity: 0;
+  }
 }
   width: 90%;
   max-width: 420px;
@@ -251,8 +272,8 @@ p {
   </div>
 </div>
 
-  </div>  <audio id="music" autoplay loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=happy-birthday-to-you-piano-version-13976.mp3" type="audio/mpeg">
+  </div>  <audio id="music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   </audio>  <script>
     const hearts = document.getElementById('hearts');
 
@@ -273,10 +294,14 @@ p {
     setInterval(createHeart, 400);
 
     function openEnvelope() {
-      document.querySelector('.envelope').classList.add('open');
+      const envelope = document.querySelector('.envelope');
+      envelope.classList.add('open');
 
       const music = document.getElementById('music');
+      music.volume = 0.4;
       music.play().catch(() => {});
+
+      createSparkles();
     }
 
     function showMessage(event) {
